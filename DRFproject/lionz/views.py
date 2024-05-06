@@ -3,6 +3,11 @@ import json
 from django.http import JsonResponse
 from .models import *
 from django.shortcuts import get_object_or_404
+from .serializers import AssignmentSerializer
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.views import APIView
 #.serializers , REST프레임워크 import 추가 필요
 
 # Create your views here.

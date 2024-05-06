@@ -1,7 +1,5 @@
-from django.db import models
 
-class Member(models.Model): # Member 모델 정의
-    name = models.CharField(max_length=20) # 멤버 이름 저장
+from django.db import models
 
 class Category(models.Model): #카테고리 모델``
     name = models.CharField(max_length=20,unique=True) #카테고리 이름, 중복 불가능
@@ -18,22 +16,19 @@ class Assigment(models.Model): # 과제 생성 모델
     ('FE', 'FE'),
     ('ALL', 'All')
     ])
-    catagory_id = models.ForeignKey(Category, on_delete=models.CASCADE,related_name='assignments')
-    # 카테고리:과제 = 1:N 관계 설정
     content = models.TextField() #과제 내용
     githubUrl = models.URLField() #github 주소
 
 
 class Submission(models.Model):
-    member_id = models.ForeignKey(Member, on_delete=models.CASCADE,related_name='assignments') 
-    # 멤버:제출물 = 1:N 관계 설정,멤버가 삭제되면 과제도 삭제
     assignment_id = models.ForeignKey(Assigment, on_delete=models.CASCADE,related_name='submissions')
     # 과제:제출물 = 1:N 관계 설정, 과제가 삭제되면 제출물도 삭제
     content = models.TextField() #제출물 내용
     githubUrl = models.URLField() #github 주소
     created_at = models.DateTimeField(auto_now_add=True) #생성일자(제출일자)
 
-
-
+class AssignmentCategory(models.Model): #과제와 카테고리 일대다, 다대일로 연결하는 모델
+    assigment = models.ForeignKey(Assigment, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True) #카테고리가 삭제돼도 과제는 삭제 x 카테고리만 NULL로바뀜
 
 
