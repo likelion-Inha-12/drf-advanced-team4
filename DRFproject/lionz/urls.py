@@ -10,6 +10,6 @@ urlpatterns = [
     path('assignments/detail/<int:pk>/', AssignmentRetrieveAPIView.as_view(), name='assignment-detail'),
     path('assignments/update/', updateAssignment, name='assignment-update'),
     path('assignments/delete/<int:pk>/', deleteAssignment, name='assignment-delete'),
-    path('assignments/part/', AssignmentListAPIView.as_view({'get': 'get_serializer_part'}), name='assignment-list-part'),  # get_serializer_part 함수 연결
-    path('assignments/category/', AssignmentListAPIView.as_view({'get': 'get_serializer_category'}), name='assignment-list-category'),  # get_serializer_category 함수 연결
+    path('assignments/part/', AssignmentPartAPIView.as_view(), name='assignment-part-list'),
+    path('assignments/category/', AssignmentCategoryAPIView.as_view(), name='assignment-category-list'),
 ]

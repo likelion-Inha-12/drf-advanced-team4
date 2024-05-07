@@ -44,18 +44,6 @@ class AssignmentListAPIView(generics.ListAPIView):
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs) #요 다음에 정보 필터링 해야 하는 로직 추가되어야 할 것 같아요!
         return api_response(data=response.data, message="과제 목록 조회 성공", status_code=status.HTTP_200_OK)
-    
-    def get_serializer_part(self, request):
-        queryset = Assignment.objects.filter(part=request.data.get('part'))
-        serializer = AssignmentSerializer(queryset, many=True, fields=('title', 'created_at', 'part'))
-        return api_response(data=serializer.data, message=f"{request.data.get('part')} 파트 과제 조회 성공", status_code=status.HTTP_200_OK)
-    
-    
-    def get_serializer_category(self, request):
-        queryset = Assignment.objects.filter(part=request.data.get('category'))
-        serializer = AssignmentSerializer(queryset, many=True, fields=('title', 'created_at', 'part'))
-        return api_response(data=serializer.data, message=f"{request.data.get('category')} 카테고리 과제 조회 성공", status_code=status.HTTP_200_OK)
-
 
 class AssignmentRetrieveAPIView(generics.RetrieveAPIView):
     queryset = Assignment.objects.all()
@@ -101,4 +89,26 @@ def deleteAssignment(request, pk): # 6. 특정 과제 삭제
     return api_response(data=None, message="과제 삭제 실패", status_code=status.HTTP_400_OK)
 
 
-  
+class AssignmentPartAPIView(generics.ListAPIView):
+    serializer_class = AssignmentViewSerializer
+
+    def get_queryset(self):
+        part = self.request.query_params.get('part')
+        return Assignment.objects.filter(part=part)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return api_response(data=serializer.data, message="과제 조회 성공", status_code=status.HTTP_200_OK)
+
+class AssignmentCategoryAPIView(generics.ListAPIView):
+    serializer_class = AssignmentViewSerializer
+
+    def get_queryset(self):
+        category = self.request.query_params.get('category')
+        return Assignment.objects.filter(category=category)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return api_response(data=serializer.data, message="과제 조회 성공", status_code=status.HTTP_200_OK)
