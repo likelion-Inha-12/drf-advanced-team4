@@ -60,6 +60,7 @@ class AssignmentRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIVi
         submissions = Submission.objects.filter(assignment_id=instance.id)  # assignment_id를 통해 제출물 검색
         submissions.delete()  # 연관된 제출물 모두 삭제
         instance.delete()  # 과제 삭제
+        return api_response(data=None, message="특정 과제 삭제 성공", status_code=status.HTTP_204_NO_CONTENT)
 
 
 class AssignmentFilterAPIView(generics.ListAPIView):
