@@ -79,7 +79,7 @@ class AssignmentPartAPIView(generics.ListAPIView):
     serializer_class = AssignmentViewSerializer
 
     def get_queryset(self):
-        part = self.request.query_params.get('part')
+        part = self.request.data.get('part')
         return Assignment.objects.filter(part=part)
 
     def list(self, request, *args, **kwargs):

@@ -34,8 +34,6 @@ class AssignmentDetailSerializer(serializers.ModelSerializer):
         fields = ['title', 'created_at', 'part', 'category', 'deadline', 'githubUrl', 'content', 'submissions']
 
 class AssignmentViewSerializer(serializers.ModelSerializer):
-    category = CategorySerializer()
-
     class Meta:
         model = Assignment
         fields = ['title', 'created_at', 'part']
