@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from .models import *
+from datetime import datetime
+from django.utils.timesince import timesince
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -28,10 +30,20 @@ class SubmissionSerializer(serializers.ModelSerializer):
 class AssignmentDetailSerializer(serializers.ModelSerializer):
     category = CategorySerializer()
     submissions = SubmissionSerializer(many=True, read_only=True)
+    remaining_time = serializers.SerializerMethodField()
 
     class Meta:
         model = Assignment
-        fields = ['title', 'created_at', 'part', 'category', 'deadline', 'githubUrl', 'content', 'submissions']
+        fields = ['title', 'created_at', 'part', 'category', 'deadline', 'content', 'submissions', 'remaining_time']
+
+    def get_remaining_time(self, obj):
+        if obj.deadline:
+            now = datetime.now(obj.deadline.tzinfo)
+            if obj.deadline > now:
+                return timesince(now, obj.deadline) + ' 남았습니다'
+            else:
+                return '마감기한이 지났습니다.'
+        return None
 
 class AssignmentViewSerializer(serializers.ModelSerializer):
     class Meta:
