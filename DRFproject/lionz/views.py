@@ -91,7 +91,7 @@ class AssignmentCategoryAPIView(generics.ListAPIView):
     serializer_class = AssignmentViewSerializer
 
     def get_queryset(self):
-        category = self.request.query_params.get('category')
+        category = self.request.data.get('category')
         return Assignment.objects.filter(category=category)
 
     def list(self, request, *args, **kwargs):
