@@ -25,10 +25,6 @@ class AssignmentCreateAPIView(generics.CreateAPIView):
     queryset = Assignment.objects.all()  #
     serializer_class = AssignmentSerializer
 
-    def create(self, request, *args, **kwargs):
-        response = super().create(request, *args, **kwargs)
-        return api_response(data=response.data, message="과제가 성공적으로 생성되었습니다.", status_code=status.HTTP_201_CREATED)
-
 class SubmissionCreateAPIView(generics.CreateAPIView):
     queryset = Submission.objects.all()
     serializer_class = SubmissionSerializer
