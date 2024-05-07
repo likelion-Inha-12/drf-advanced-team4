@@ -49,25 +49,14 @@ class AssignmentRetrieveAPIView(generics.RetrieveAPIView):
         response = super().retrieve(request, *args, **kwargs)
         return api_response(data=response.data, message="특정 과제 조회 성공", status_code=status.HTTP_200_OK)
 
-def updateAssignment(request): # 5. 특정 과제 내용 수정하기
-    if request.method == 'PUT':
-        modified_data = {} # 수정된 데이터 포함할 빈 딕셔너리 생성
 
-        if 'title' in request.data: # 제목 수정 데이터
-            modified_data['title'] = request.data.get('title')
-        if 'githubUrl' in request.data: # 깃허브링크 수정 데이터
-            modified_data['githubUrl'] = request.data.get('githubUrl')
-        if 'deadline' in request.data: # 마감일자 수정 데이터
-            modified_data['deadline'] = request.data.get('deadline')
-        if 'content' in request.data: # 내용 수정 데이터
-            modified_data['content'] = request.data.get('content')
-        
-        serializer = AssignmentSerializer(Assignment, data=modified_data, partial=True)
-
-        if serializer.is_valid():
-            serializer.save()
-            return api_response(data=serializer.data, message="과제가 성공적으로 수정되었습니다.", status_code=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+@api_view(['PUT'])
+def updateAssignment(request, pk): # 과제 수정 API
+    assignment = get_object_or_404(Assignment, pk=pk)
+    serializer = AssignmentSerializer(assignment, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 def deleteAssignment(request, pk): # 6. 특정 과제 삭제

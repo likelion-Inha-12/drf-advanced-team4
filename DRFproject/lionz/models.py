@@ -4,7 +4,7 @@ class Member(models.Model): # Member 모델 정의
     name = models.CharField(max_length=20) # 멤버 이름 저장
 
 class Category(models.Model): #카테고리 모델``
-    name = models.CharField(max_length=20,unique=True) #카테고리 이름, 중복 불가능
+    name = models.CharField(max_length=20) #카테고리 이름, 중복 불가능
 
 class Assignment(models.Model): # 과제 생성 모델
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True) 
