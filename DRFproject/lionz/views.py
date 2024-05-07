@@ -61,24 +61,22 @@ class AssignmentRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIVi
         submissions.delete()  # 연관된 제출물 모두 삭제
         instance.delete()  # 과제 삭제
 
-class AssignmentPartAPIView(generics.ListAPIView):
+
+class AssignmentFilterAPIView(generics.ListAPIView):
     serializer_class = AssignmentViewSerializer
 
     def get_queryset(self):
-        part = self.request.data.get('part')
-        return Assignment.objects.filter(part=part)
+        queryset = Assignment.objects.all()
 
-    def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-        serializer = self.get_serializer(queryset, many=True)
-        return api_response(data=serializer.data, message="과제 조회 성공", status_code=status.HTTP_200_OK)
+        if 'part' in self.request.query_params:
+            part = self.request.query_params.get('part')
+            queryset = queryset.filter(part = part)
 
-class AssignmentCategoryAPIView(generics.ListAPIView):
-    serializer_class = AssignmentViewSerializer
+        if 'category' in self.request.query_params:
+            category = self.request.query_params.get('category')
+            queryset = queryset.filter(category = category)
 
-    def get_queryset(self):
-        category = self.request.data.get('category')
-        return Assignment.objects.filter(category=category)
+        return queryset
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
