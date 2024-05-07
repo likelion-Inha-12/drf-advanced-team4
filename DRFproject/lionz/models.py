@@ -1,10 +1,12 @@
 
 from django.db import models
 
-class Category(models.Model): #카테고리 모델``
+class Category(models.Model): #카테고리 모델
     name = models.CharField(max_length=20,unique=True) #카테고리 이름, 중복 불가능
 
 class Assigment(models.Model): # 과제 생성 모델
+    catagory_id = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True) 
+    #과제 : 카테고리 = 1:N 관계 설정, 카테고리가 삭제되도 과제는 삭제 x 카테고리만 NULL로 바뀜
     title = models.CharField(max_length=50) #제목
     created_at = models.DateTimeField(auto_now_add=True) #생성일자
     deadline = models.DateTimeField() #마감일자
@@ -27,8 +29,6 @@ class Submission(models.Model):
     githubUrl = models.URLField() #github 주소
     created_at = models.DateTimeField(auto_now_add=True) #생성일자(제출일자)
 
-class AssignmentCategory(models.Model): #과제와 카테고리 일대다, 다대일로 연결하는 모델
-    assigment = models.ForeignKey(Assigment, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True) #카테고리가 삭제돼도 과제는 삭제 x 카테고리만 NULL로바뀜
+
 
 
