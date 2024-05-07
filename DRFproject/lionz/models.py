@@ -20,8 +20,6 @@ class Assignment(models.Model): # 과제 생성 모델
     ('FE', 'FE'),
     ('ALL', 'All')
     ])
-    catagory_id = models.ForeignKey(Category, on_delete=models.CASCADE,related_name='assignments')
-    # 카테고리:과제 = 1:N 관계 설정
     content = models.TextField() #과제 내용
     githubUrl = models.URLField() #github 주소
 

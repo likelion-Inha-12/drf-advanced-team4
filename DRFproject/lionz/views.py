@@ -21,14 +21,6 @@ def api_response(data, message, status_code):
     }
     return Response(response, status=status_code)
 
-# API 응답 포맷을 표준화하는 함수
-def api_response(data, message, status_code):
-    response = {
-        "message": message,
-        "data": data
-    }
-    return Response(response, status=status_code)
-
 class AssignmentCreateAPIView(generics.CreateAPIView):
     queryset = Assignment.objects.all()  #
     serializer_class = AssignmentSerializer
@@ -50,8 +42,14 @@ class AssignmentListAPIView(generics.ListAPIView):
     serializer_class = AssignmentSerializer
 
     def list(self, request, *args, **kwargs):
-        response = super().list(request, *args, **kwargs)
+        response = super().list(request, *args, **kwargs) #요 다음에 정보 필터링 해야 하는 로직 추가되어야 할 것 같아요!
         return api_response(data=response.data, message="과제 목록 조회 성공", status_code=status.HTTP_200_OK)
+    
+    def get_serializer_context(self, request):
+        queryset = Assignment.objects.filter(part=request.data.get('part'))
+        serializer = AssignmentSerializer(queryset, many=True, fields=('title', 'created_at', 'part', 'category'))
+        return api_response(data=serializer.data, message=f"{request.data.get('part')} 파트 과제 조회 성공", status_code=status.HTTP_200_OK)
+
 
 class AssignmentRetrieveAPIView(generics.RetrieveAPIView):
     queryset = Assignment.objects.all()
