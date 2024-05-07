@@ -49,47 +49,37 @@ class AssignmentRetrieveAPIView(generics.RetrieveAPIView):
         response = super().retrieve(request, *args, **kwargs)
         return api_response(data=response.data, message="특정 과제 조회 성공", status_code=status.HTTP_200_OK)
 
-def updateAssignment(request): # 5. 특정 과제 내용 수정하기
-    if request.method == 'PUT':
-        modified_data = {} # 수정된 데이터 포함할 빈 딕셔너리 생성
 
-        if 'title' in request.data: # 제목 수정 데이터
-            modified_data['title'] = request.data.get('title')
-        if 'githubUrl' in request.data: # 깃허브링크 수정 데이터
-            modified_data['githubUrl'] = request.data.get('githubUrl')
-        if 'deadline' in request.data: # 마감일자 수정 데이터
-            modified_data['deadline'] = request.data.get('deadline')
-        if 'content' in request.data: # 내용 수정 데이터
-            modified_data['content'] = request.data.get('content')
-        
-        serializer = AssignmentSerializer(Assignment, data=modified_data, partial=True)
-
-        if serializer.is_valid():
-            serializer.save()
-            return api_response(data=serializer.data, message="과제가 성공적으로 수정되었습니다.", status_code=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+@api_view(['PUT'])
+def updateAssignment(request, pk): # 과제 수정 API
+    assignment = get_object_or_404(Assignment, pk=pk)
+    serializer = AssignmentSerializer(assignment, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-def deleteAssignment(request, pk): # 6. 특정 과제 삭제
-    if request.method == 'DELETE':
-        assignment = get_object_or_404(Assignment, pk = pk) # 삭제할 과제 불러옴
+class AssignmentDeleteView(generics.DestroyAPIView):
+    queryset = Assignment.objects.all()
+    serializer_class = AssignmentSerializer
+    lookup_field = 'pk'
 
-        submissions = Submission.objects.filter(assignment) # 삭제할 과제와 연관된 제출물 필터링
-
-        for submission in submissions: # 해당 제출물들 삭제
+    def perform_destroy(self, instance):
+        # 연관된 제출물 삭제
+        submissions = Submission.objects.filter(assignment_id=instance)
+        for submission in submissions:
             submission.delete()
-
-        assignment.delete() # 해당 과제 삭제
-
-        return api_response(data=None, message=f"id: {pk}번 과제 삭제 성공", status_code=status.HTTP_200_OK)
-    return api_response(data=None, message="과제 삭제 실패", status_code=status.HTTP_400_OK)
+        
+        # 과제 삭제
+        instance.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class AssignmentPartAPIView(generics.ListAPIView):
     serializer_class = AssignmentViewSerializer
 
     def get_queryset(self):
-        part = self.request.query_params.get('part')
+        part = self.request.data.get('part')
         return Assignment.objects.filter(part=part)
 
     def list(self, request, *args, **kwargs):
@@ -101,7 +91,7 @@ class AssignmentCategoryAPIView(generics.ListAPIView):
     serializer_class = AssignmentViewSerializer
 
     def get_queryset(self):
-        category = self.request.query_params.get('category')
+        category = self.request.data.get('category')
         return Assignment.objects.filter(category=category)
 
     def list(self, request, *args, **kwargs):
