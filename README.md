@@ -1,20 +1,48 @@
 # drf-advanced-team4
 drf실습 4팀 과제 레포입니다.
 
-1. 과제를 생성하는 api
-   ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/99ae132f-2903-412a-8610-7e15eb931f24/5dc10edf-2ad9-43a5-8879-ec72903d1061/Untitled.png)
+## API 명세서
 
-2. 특정 과제에 대한 제출물을 생성하는 api
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/99ae132f-2903-412a-8610-7e15eb931f24/7418a1ba-6775-4190-bb93-9e40925615fd/Untitled.png)
-3. 생성되어 있는 전체 과제들의 목록을 조회하는 api
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/99ae132f-2903-412a-8610-7e15eb931f24/70aea95d-400d-41a9-9c61-7db3c9d73a17/Untitled.png)
-4. 특정 과제의 내용을 조회하는 api
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/99ae132f-2903-412a-8610-7e15eb931f24/e4f2aa0c-b6b7-4d9a-9a88-4f22eabc5ec7/Untitled.png)
-5. 특정 과제의 내용을 수정하는 api
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/99ae132f-2903-412a-8610-7e15eb931f24/88062981-b3df-4492-b8ad-fab5fa585531/Untitled.png)
-6. 특정 과제를 삭제하는 api
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/99ae132f-2903-412a-8610-7e15eb931f24/99dae2ae-461c-42cb-a22e-1e4daf939b7a/Untitled.png)
-7. 과제들을 파트별로 조회하는 api
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/99ae132f-2903-412a-8610-7e15eb931f24/1d2b1ce3-6582-4e77-8f42-eeea0dfbc19c/Untitled.png)
-8. 과제를 카테고리 별로 조회하는 api
-9. ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/99ae132f-2903-412a-8610-7e15eb931f24/2f596087-4689-4d7e-9c6d-2752577cd837/Untitled.png)
+https://puffy-study-522.notion.site/DRF-4-0182cbadc54541919673216d74dc237f?pvs=4
+
+## API 기능 
+
+### 1. 과제를 생성하는 api
+
+<img width="654" alt="1" src="https://github.com/likelion-Inha-12/drf-advanced-team4/assets/142724910/8ad9d28f-b950-4ce0-b704-0a2ee9bbb473">
+
+
+### 2. 특정 과제에 대한 제출물을 생성하는 api
+
+<img width="905" alt="2" src="https://github.com/likelion-Inha-12/drf-advanced-team4/assets/142724910/419d7540-d1cf-4a07-b658-0a948c11e983">
+
+
+### 3. 생성되어 있는 전체 과제들의 목록을 조회하는 api
+
+<img width="935" alt="3" src="https://github.com/likelion-Inha-12/drf-advanced-team4/assets/142724910/772caf0c-0f41-4ff9-ad43-18e186f9c654">
+
+
+### 4. 특정 과제의 내용을 조회하는 api
+
+<img width="726" alt="4" src="https://github.com/likelion-Inha-12/drf-advanced-team4/assets/142724910/6a645e8e-ab48-4ebb-96a7-202a96814d57">
+
+
+### 5. 특정 과제의 내용을 수정하는 api
+
+<img width="935" alt="5" src="https://github.com/likelion-Inha-12/drf-advanced-team4/assets/142724910/c0cd7bdc-26a3-44c4-85bd-241db99bebf8">
+
+
+### 6. 특정 과제를 삭제하는 api
+
+![6](https://github.com/likelion-Inha-12/drf-advanced-team4/assets/142724910/2771ceff-efb5-4863-a66d-481621fa6455)
+
+
+### 7. 과제들을 파트별로 조회하는 api
+
+<img width="935" alt="7" src="https://github.com/likelion-Inha-12/drf-advanced-team4/assets/142724910/b7382ffd-d5ac-4bb8-a363-031e2bb4dfaa">
+
+
+### 8. 과제를 카테고리 별로 조회하는 api
+
+<img width="654" alt="8" src="https://github.com/likelion-Inha-12/drf-advanced-team4/assets/142724910/54e0a200-93b3-4975-aed8-4892d728d9f7">
+
