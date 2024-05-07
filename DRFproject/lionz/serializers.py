@@ -7,13 +7,15 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['name']
 
 class AssignmentSerializer(serializers.ModelSerializer):
+    category = CategorySerializer()
+
     class Meta:
         model = Assignment
         fields = ['category', 'title', 'created_at', 'deadline', 'part', 'content', 'githubUrl']
 
     def create(self, validated_data):
         category_data = validated_data.pop('category')
-        category, _ = Category.objects.get_or_create(**category_data)
+        category, created = Category.objects.get_or_create(**category_data)
         assignment = Assignment.objects.create(category=category, **validated_data)
         return assignment
     
