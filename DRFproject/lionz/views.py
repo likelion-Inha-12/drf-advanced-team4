@@ -33,6 +33,7 @@ class SubmissionCreateAPIView(generics.CreateAPIView):
         response = super().create(request, *args, **kwargs)
         return api_response(data=response.data, message="제출물이 성공적으로 생성되었습니다.", status_code=status.HTTP_201_CREATED)
 
+
 class AssignmentListAPIView(generics.ListAPIView):
     queryset = Assignment.objects.all()
     serializer_class = AssignmentSerializer
@@ -41,39 +42,24 @@ class AssignmentListAPIView(generics.ListAPIView):
         response = super().list(request, *args, **kwargs) #요 다음에 정보 필터링 해야 하는 로직 추가되어야 할 것 같아요!
         return api_response(data=response.data, message="과제 목록 조회 성공", status_code=status.HTTP_200_OK)
 
-class AssignmentRetrieveAPIView(generics.RetrieveAPIView):
+
+class AssignmentRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Assignment.objects.all()
     serializer_class = AssignmentDetailSerializer
 
     def retrieve(self, request, *args, **kwargs):
         response = super().retrieve(request, *args, **kwargs)
         return api_response(data=response.data, message="특정 과제 조회 성공", status_code=status.HTTP_200_OK)
-
-
-@api_view(['PUT'])
-def updateAssignment(request, pk): # 과제 수정 API
-    assignment = get_object_or_404(Assignment, pk=pk)
-    serializer = AssignmentSerializer(assignment, data=request.data, partial=True)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class AssignmentDeleteView(generics.DestroyAPIView):
-    queryset = Assignment.objects.all()
-    serializer_class = AssignmentSerializer
-    lookup_field = 'pk'
-
+    
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', True)  # partial=True로 설정하여 부분 업데이트를 지원
+        response = super().update(request, partial=partial, *args, **kwargs)
+        return api_response(data=response.data, message="특정 과제 수정 성공", status_code=status.HTTP_200_OK)
+    
     def perform_destroy(self, instance):
-        # 연관된 제출물 삭제
-        submissions = Submission.objects.filter(assignment_id=instance)
-        for submission in submissions:
-            submission.delete()
-        
-        # 과제 삭제
-        instance.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
+        submissions = Submission.objects.filter(assignment_id=instance.id)  # assignment_id를 통해 제출물 검색
+        submissions.delete()  # 연관된 제출물 모두 삭제
+        instance.delete()  # 과제 삭제
 
 class AssignmentPartAPIView(generics.ListAPIView):
     serializer_class = AssignmentViewSerializer
