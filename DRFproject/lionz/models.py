@@ -6,7 +6,6 @@ class Member(models.Model): # Member 모델 정의
 class Category(models.Model): #카테고리 모델``
     name = models.CharField(max_length=20,unique=True) #카테고리 이름, 중복 불가능
 
-
 class Assignment(models.Model): # 과제 생성 모델
     catagory_id = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True) 
     #과제 : 카테고리 = 1:N 관계 설정, 카테고리가 삭제되도 과제는 삭제 x 카테고리만 NULL로 바뀜
