@@ -60,11 +60,17 @@ class AssignmentRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIVi
         response = super().update(request, partial=partial, *args, **kwargs)
         return api_response(data=response.data, message="특정 과제 수정 성공", status_code=status.HTTP_200_OK)
     
+    def delete(self, request, *args, **kwargs):
+        instance = self.get_object()  # 과제 인스턴스를 불러옵니다.
+        instance_id = instance.id  # 과제의 ID를 저장합니다.
+        self.perform_destroy(instance)
+        # 과제 삭제 후, ID를 포함한 메시지를 반환합니다.
+        return Response({'message': f'과제 ID {instance_id}번이 성공적으로 삭제되었습니다.'}, status=status.HTTP_204_NO_CONTENT)
+
     def perform_destroy(self, instance):
-        submissions = Submission.objects.filter(assignment_id=instance.id)  # assignment_id를 통해 제출물 검색
+        submissions = Submission.objects.filter(assignment_id=instance.id)
         submissions.delete()  # 연관된 제출물 모두 삭제
         instance.delete()  # 과제 삭제
-        return api_response(data=None, message="특정 과제 삭제 성공", status_code=status.HTTP_200_OK)
 
 
 class AssignmentFilterAPIView(generics.ListAPIView):
