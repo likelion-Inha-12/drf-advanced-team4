@@ -31,10 +31,11 @@ class AssignmentDetailSerializer(serializers.ModelSerializer):
     category = CategorySerializer()
     submissions = SubmissionSerializer(many=True, read_only=True)
     remaining_time = serializers.SerializerMethodField()
+    count = serializers.SerializerMethodField()
 
     class Meta:
         model = Assignment
-        fields = ['title', 'created_at', 'part', 'category', 'deadline', 'content', 'submissions', 'remaining_time']
+        fields = ['title', 'created_at', 'part', 'category', 'deadline', 'content', 'submissions', 'remaining_time', 'count']
 
     def get_remaining_time(self, obj):
         if obj.deadline:
@@ -44,6 +45,9 @@ class AssignmentDetailSerializer(serializers.ModelSerializer):
             else:
                 return '마감기한이 지났습니다.'
         return None
+
+    def get_count(self, obj):
+        return obj.submissions.count()
 
 class AssignmentViewSerializer(serializers.ModelSerializer):
     class Meta:
