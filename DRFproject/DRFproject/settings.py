@@ -10,7 +10,9 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     #myapp 추가
-    'loinz',
+    'lionz',
+    # third party app
+    'rest_framework',
     # Basic App
     'django.contrib.admin',
     'django.contrib.auth',
@@ -31,7 +33,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'seminar_project.urls'
+ROOT_URLCONF = 'DRFproject.urls'
 
 TEMPLATES = [
     {
@@ -49,7 +51,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'seminar_project.wsgi.application'
+WSGI_APPLICATION = 'DRFproject.wsgi.application'
 
 DATABASES = {
     'default': {
