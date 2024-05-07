@@ -71,7 +71,22 @@ def changeAssignment(request): # 5. 특정 과제 내용 수정하기
 
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return api_response(data=serializer.data, message="과제가 성공적으로 수정되었습니다.", status_code=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+def deleteAssignment(request, pk): # 6. 특정 과제 삭제
+    if request.method == 'DELETE':
+        assignment = get_object_or_404(Assignment, pk = pk) # 삭제할 과제 불러옴
+
+        submissions = Submission.objects.filter(assignment) # 삭제할 과제와 연관된 제출물 필터링
+
+        for submission in submissions: # 해당 제출물들 삭제
+            submission.delete()
+
+        assignment.delete() # 해당 과제 삭제
+
+        return api_response(data=None, message=f"id: {pk}번 과제 삭제 성공", status_code=status.HTTP_200_OK)
+
+
+  
