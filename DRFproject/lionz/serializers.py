@@ -13,7 +13,7 @@ class AssignmentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Assignment
-        fields = ['category', 'title', 'created_at', 'deadline', 'part', 'content', 'githubUrl']
+        fields = ['id', 'category', 'title', 'created_at', 'deadline', 'part', 'content', 'githubUrl']
 
     def create(self, validated_data):
         category_data = validated_data.pop('category')
