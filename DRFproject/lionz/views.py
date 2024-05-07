@@ -45,10 +45,16 @@ class AssignmentListAPIView(generics.ListAPIView):
         response = super().list(request, *args, **kwargs) #요 다음에 정보 필터링 해야 하는 로직 추가되어야 할 것 같아요!
         return api_response(data=response.data, message="과제 목록 조회 성공", status_code=status.HTTP_200_OK)
     
-    def get_serializer_context(self, request):
+    def get_serializer_part(self, request):
         queryset = Assignment.objects.filter(part=request.data.get('part'))
-        serializer = AssignmentSerializer(queryset, many=True, fields=('title', 'created_at', 'part', 'category'))
+        serializer = AssignmentSerializer(queryset, many=True, fields=('title', 'created_at', 'part'))
         return api_response(data=serializer.data, message=f"{request.data.get('part')} 파트 과제 조회 성공", status_code=status.HTTP_200_OK)
+    
+    
+    def get_serializer_category(self, request):
+        queryset = Assignment.objects.filter(part=request.data.get('category'))
+        serializer = AssignmentSerializer(queryset, many=True, fields=('title', 'created_at', 'part'))
+        return api_response(data=serializer.data, message=f"{request.data.get('category')} 카테고리 과제 조회 성공", status_code=status.HTTP_200_OK)
 
 
 class AssignmentRetrieveAPIView(generics.RetrieveAPIView):
@@ -59,7 +65,7 @@ class AssignmentRetrieveAPIView(generics.RetrieveAPIView):
         response = super().retrieve(request, *args, **kwargs)
         return api_response(data=response.data, message="특정 과제 조회 성공", status_code=status.HTTP_200_OK)
 
-def changeAssignment(request): # 5. 특정 과제 내용 수정하기
+def updateAssignment(request): # 5. 특정 과제 내용 수정하기
     if request.method == 'PUT':
         modified_data = {} # 수정된 데이터 포함할 빈 딕셔너리 생성
 
@@ -92,6 +98,7 @@ def deleteAssignment(request, pk): # 6. 특정 과제 삭제
         assignment.delete() # 해당 과제 삭제
 
         return api_response(data=None, message=f"id: {pk}번 과제 삭제 성공", status_code=status.HTTP_200_OK)
+    return api_response(data=None, message="과제 삭제 실패", status_code=status.HTTP_400_OK)
 
 
   
