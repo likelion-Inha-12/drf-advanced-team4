@@ -65,7 +65,7 @@ class AssignmentRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIVi
         instance_id = instance.id  # 과제의 ID를 저장합니다.
         self.perform_destroy(instance)
         # 과제 삭제 후, ID를 포함한 메시지를 반환합니다.
-        return Response({'message': f'과제 ID {instance_id}번이 성공적으로 삭제되었습니다.'}, status=status.HTTP_204_NO_CONTENT)
+        return Response({'message': f'과제 ID {instance_id}번이 성공적으로 삭제되었습니다.'}, status=status.HTTP_200_OK)
 
     def perform_destroy(self, instance):
         submissions = Submission.objects.filter(assignment_id=instance.id)
