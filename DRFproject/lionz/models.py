@@ -3,7 +3,7 @@ from django.db import models
 class Member(models.Model): # Member 모델 정의
     name = models.CharField(max_length=20) # 멤버 이름 저장
 
-class Category(models.Model): #카테고리 모델``
+class Category(models.Model): #카테고리 모델
     name = models.CharField(max_length=20) #카테고리 이름, 중복 불가능
 
 class Assignment(models.Model): # 과제 생성 모델
@@ -12,9 +12,6 @@ class Assignment(models.Model): # 과제 생성 모델
     title = models.CharField(max_length=50) #제목
     created_at = models.DateTimeField(auto_now_add=True) #생성일자
     deadline = models.DateTimeField() #마감일자
-    # part로 모델을 따로 만들었다가,3개의 파트로 과제가 분류만 되면 되니 과제 모델 안에 넣어도 무방할 것 같아서
-    #이렇게 구현하고 view에서는 filter 메소드 통해서 구분하는 방법으로 생각해봤습니다. 
-    # 이부분은 확인하시고 피드백해주세요!!
     part = models.CharField(max_length=3, choices=[
     ('BE', 'BE'),
     ('FE', 'FE'),
