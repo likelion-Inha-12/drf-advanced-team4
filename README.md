@@ -1,6 +1,9 @@
 # drf-advanced-team4
 drf실습 4팀 과제 레포입니다.
 
+![DB](https://github.com/likelion-Inha-12/drf-advanced-team4/assets/142724910/21b1b31d-9c27-4abf-ae99-0e944c879af6)
+
+
 ## API 명세서
 
 https://puffy-study-522.notion.site/DRF-4-0182cbadc54541919673216d74dc237f?pvs=4
